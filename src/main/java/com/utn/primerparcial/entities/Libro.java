@@ -22,6 +22,6 @@ public class Libro extends BaseEntidad {
     private String genero;
     private int paginas;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Autor> autores = new ArrayList<Autor>();
 }
