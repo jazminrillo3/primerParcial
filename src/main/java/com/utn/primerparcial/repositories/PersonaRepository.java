@@ -16,7 +16,9 @@ public interface PersonaRepository extends BaseRepository<Persona, Long> {
 
  List<Persona> findByNombreContainingOrApellidoContaining(String nombre, String apellido);
 
- boolean existsByDni(String dni);
+ Page<Persona> findByNombreContainingOrApellidoContaining(String nombre, String apellido, Pageable pageable);
+
+ //boolean existsByDni(String dni);
 
   /** Metodo de anotación JPQL **/
 
@@ -24,9 +26,15 @@ public interface PersonaRepository extends BaseRepository<Persona, Long> {
   @Query(value="SELECT p FROM Persona p WHERE p.nombre LIKE '%?1%' OR p.apellido LIKE '%?1%'" )
   List<Persona> search(String filtro);
 
+  @Query(value="SELECT p FROM Persona p WHERE p.nombre LIKE '%?1%' OR p.apellido LIKE '%?1%'" )
+  Page<Persona> search(String filtro, Pageable pageable);
+
   //Con parametros nombrados
   @Query(value="SELECT p FROM Persona p WHERE p.nombre LIKE '%:filtro%' OR p.apellido LIKE '%:filtro%'" )
   List<Persona> searchParam(@Param("filtro") String filtro);
+
+  @Query(value="SELECT p FROM Persona p WHERE p.nombre LIKE '%:filtro%' OR p.apellido LIKE '%:filtro%'" )
+  Page<Persona> searchParam(@Param("filtro") String filtro, Pageable pageable);
 
   /** Metodo con query nativo **/
 
@@ -35,5 +43,12 @@ public interface PersonaRepository extends BaseRepository<Persona, Long> {
           nativeQuery = true
   )
   List<Persona> searchNative(String filtro);
+
+  @Query(
+          value="SELECT * FROM persona WHERE persona.nombre LIKE '%:filtro%' OR persona.apellido LIKE '%:filtro%'",
+          countQuery = "SELECT count(*) FROM persona",
+          nativeQuery = true
+  )
+  Page<Persona> searchNative(String filtro, Pageable page);
 
  }

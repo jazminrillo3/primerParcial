@@ -3,6 +3,8 @@ package com.utn.primerparcial.services;
 import com.utn.primerparcial.entities.BaseEntidad;
 import com.utn.primerparcial.repositories.BaseRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +16,17 @@ public abstract class BaseServiceImpl<E extends BaseEntidad, Id extends Serializ
 
     public BaseServiceImpl(BaseRepository<E, Id> baseRepository) {
         this.baseRepository = baseRepository;
+    }
+
+    @Override
+    @Transactional
+    public Page<E> findAll(Pageable pageable) throws Exception{
+        try{
+            Page<E> entities = baseRepository.findAll(pageable);
+            return entities;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override

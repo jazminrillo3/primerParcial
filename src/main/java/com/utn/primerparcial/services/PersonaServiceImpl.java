@@ -27,6 +27,19 @@ public class PersonaServiceImpl extends BaseServiceImpl<Persona, Long> implement
         try{
             //List<Persona> personas = personaRepository.findByNombreContainingOrApellidoContaining(filtro, filtro);
             List<Persona> personas = personaRepository.search(filtro);
+            //List<Persona> personas = personaRepository.searchNative(filtro);
+            return personas;
+        }catch (Exception e){
+            throw new Exception("Búsqueda no exitosa");
+        }
+
+    }
+
+    @Override
+    public Page<Persona> search(String filtro, Pageable pageable) throws Exception {
+
+        try{
+            Page<Persona> personas = personaRepository.findByNombreContainingOrApellidoContaining(filtro, filtro, pageable);
             return personas;
         }catch (Exception e){
             throw new Exception("Búsqueda no exitosa");
